@@ -3,7 +3,7 @@ import pandas as pd
 from transformers import BertTokenizer, BertModel
 import torch
 
-vector_length = 25
+vector_length = 32
 test = AnnoyIndex(vector_length, 'dot')
 
 test.load('data/wiki_index.ann')
@@ -11,7 +11,7 @@ test.load('data/wiki_index.ann')
 women_df = pd.read_csv('data/women_out.csv')
 questions_df = pd.read_csv('data/questions.csv')
 
-tokenizer = BertTokenizer.from_pretrained('dslim/bert-base-NER')
+tokenizer = BertTokenizer.from_pretrained('models/')
 
 for _, row in questions_df.iterrows():
     q = row['question']

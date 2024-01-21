@@ -63,9 +63,9 @@ for i, row in bbc_df.iterrows():
         #print("Welp")
     
 
-doc_index.build(10)
-doc_index.save('data/doc_index.ann')
-bbc_df_out.to_csv('data/bbc_out.csv', index=False)
+doc_index.build(1)
+doc_index.save('data/wiki_index.ann')
+bbc_df_out.to_csv('data/women_out.csv', index=False)
 
 
 

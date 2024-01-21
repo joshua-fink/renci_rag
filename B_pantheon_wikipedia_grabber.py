@@ -6,11 +6,16 @@ from annoy import AnnoyIndex
 import numpy as np
 import torch
 
-from transformers import BertTokenizer, BertModel
-tokenizer = BertTokenizer.from_pretrained("dslim/bert-base-NER")
-model = BertModel.from_pretrained("dslim/bert-base-NER")
+from transformers import AutoTokenizer, AutoModel
 
-vector_length = 25
+model_name = "prajjwal1/bert-medium"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModel.from_pretrained(model_name)
+
+# add names to tokenizer vocabulary
+vocab = tokenizer.get_vocab().keys()
+
+vector_length = 32
 doc_index = AnnoyIndex(vector_length, 'dot')
 
 df = pd.read_csv("data/young_us_women_alive.csv")
@@ -19,7 +24,15 @@ df_out = pd.DataFrame(columns=['id', 'chunk'])
 name_slugs = []
 for _, row in df.iterrows():
 	name_slug = row['slug']
+	name = row['name'].split()
+	for word in name:
+		if word not in vocab:
+			print(word)
+			tokenizer.add_tokens(word)
 	name_slugs.append(name_slug)
+
+# resize model
+model.resize_token_embeddings(len(tokenizer))
 
 failed = []
 id = 0
@@ -147,3 +160,6 @@ for fail in failed:
     df = df.loc[df['slug'] != fail]
 
 df.to_csv("data/young_us_women_alive.csv", index=False)
+
+tokenizer.save_pretrained('models/')
+model.save_pretrained('models/')
