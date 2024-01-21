@@ -13,5 +13,5 @@ print(bbc_outs_df.loc[bbc_outs_df['id'] == 1, 'chunk'].iloc[0])
 print()
 
 for sim in outs:
-    print(bbc_outs_df.loc[bbc_outs_df['id'] == sim, 'chunk'].iloc[0])
+    print(bbc_outs_df.loc[bbc_outs_df['id'] == sim, 'chunk'].iloc(0))
 
